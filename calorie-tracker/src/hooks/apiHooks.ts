@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 type NewFood = Omit<Food, "id"> & { carbohydrates: number; fats: number };
 
-const BASE_URL = "http://localhost:8080/api/foods";
+const BASE_URL = "https://calorie-tracker-qe4r.onrender.com/api/foods";
 
 // Fetch all food items
 export const useGetFoods = () => {
