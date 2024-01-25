@@ -1,13 +1,5 @@
 import React, { useState } from "react";
 import { useGetFoods, useDeleteFood, useUpdateFood } from "@/hooks/apiHooks";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,15 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FoodForm } from "@/forms/FoodForm";
-interface Food {
-  id?: string;
-  foodName: string;
-  calories: number;
-  protein: number;
-  carbohydrates: number;
-  fats: number;
-}
 import { useAddFood } from "@/hooks/apiHooks";
+import { Food } from "@/types/interfaces";
+import FoodTable from "./FoodTable";
 
 function toTitleCase(str: string): string {
   return str
@@ -105,8 +91,13 @@ const MainSection: React.FC = () => {
     setIsEnterFoodDialogOpen(false);
   };
 
-
-  const handleCreateFood = (values: { carbohydrates: number; foodName: string; calories: number; protein: number; fats: number; }) => {
+  const handleCreateFood = (values: {
+    carbohydrates: number;
+    foodName: string;
+    calories: number;
+    protein: number;
+    fats: number;
+  }) => {
     addFoodMutation.mutate(values);
     handleEnterFoodDialogClose(); // Close the dialog after submitting the form
   };
@@ -128,68 +119,18 @@ const MainSection: React.FC = () => {
   return (
     <main className="flex-1 p-2 ml-3 bg-white">
       {data && (
-        <Table className="w-full text-sm sm:text-base">
-          <TableHeader>
-            <TableRow>
-              <TableHead className="font-bold text-black">Food Name</TableHead>
-              <TableHead className="font-bold text-black">Protein</TableHead>
-              <TableHead className="font-bold text-black">Carbs</TableHead>
-              <TableHead className="font-bold text-black">Fats</TableHead>
-              <TableHead className="font-bold text-black w-[150px]">
-                Calories
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data &&
-              data.map((food: Food) => (
-                <TableRow
-                  key={food.id}
-                  onTouchStart={() => handleRowTouchStart(food)}
-                  onTouchEnd={handleRowTouchEnd}
-                >
-                  <TableCell className="w-1/5">
-                    {toTitleCase(food.foodName)}
-                  </TableCell>
-                  <TableCell className="w-1/5">{food.protein}</TableCell>
-                  <TableCell className="w-1/5">{food.carbohydrates}</TableCell>
-                  <TableCell className="w-1/5">{food.fats}</TableCell>
-                  <TableCell className="w-1/5">{food.calories}</TableCell>
-                  <TableCell className="py-0 truncate">
-                    <Button
-                      className="bg-red-500 hidden text-sm h-8 sm:inline-block"
-                      onClick={() => handleDelete(food.id || "")}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      className="bg-blue-500 hidden ml-3 h-8 sm:inline-block"
-                      onClick={() => handleEdit(food)}
-                    >
-                      Edit
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            <TableRow>
-              <TableCell colSpan={1} className="font-bold text-gray-500">
-                Total
-              </TableCell>
-              <TableCell className="font-bold text-gray-500 ">
-                {totalProtein}
-              </TableCell>
-              <TableCell className="font-bold text-gray-500 ">
-                {totalCarbohydrates}
-              </TableCell>
-              <TableCell className="font-bold text-gray-500 ">
-                {totalFats}
-              </TableCell>
-              <TableCell className="font-bold text-gray-500 ">
-                {totalCalories}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <FoodTable
+          data={data}
+          totalProtein={totalProtein}
+          totalCarbohydrates={totalCarbohydrates}
+          totalFats={totalFats}
+          totalCalories={totalCalories}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+          handleRowTouchStart={handleRowTouchStart}
+          handleRowTouchEnd={handleRowTouchEnd}
+          toTitleCase={toTitleCase}
+        />
       )}
 
       <Button
@@ -300,13 +241,17 @@ const MainSection: React.FC = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <Dialog open={isEnterFoodDialogOpen} onOpenChange={setIsEnterFoodDialogOpen}>
+      <Dialog
+        open={isEnterFoodDialogOpen}
+        onOpenChange={setIsEnterFoodDialogOpen}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Add Food Item</DialogTitle>
           </DialogHeader>
           <DialogDescription>
-            Please fill out the form below to add a new food item. Press Save when you're done.
+            Please fill out the form below to add a new food item. Press Save
+            when you're done.
           </DialogDescription>
           <FoodForm onSubmit={handleCreateFood} />
         </DialogContent>
