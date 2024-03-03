@@ -11,14 +11,14 @@ const config = {
   prefix: "",
   theme: {
     screens: {
-      sm: '640px',
-      md: '850px',
-      lg: '1024px',
-      xl: '1280px',
-      '2xl': '1536px',
-      '3xl': '1800px',
-      '4xl': '2000px',
-      '5xl': '2500px',
+      sm: "450px",
+      md: "750px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+      "3xl": "1800px",
+      "4xl": "2000px",
+      "5xl": "2500px",
     },
     fontSize: {
       xs: "0.3rem",
@@ -34,8 +34,6 @@ const config = {
     container: {
       center: true,
       padding: "2rem",
-     
-    
     },
     extend: {
       keyframes: {

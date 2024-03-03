@@ -18,11 +18,11 @@ const Sidebar: React.FC = () => {
  }
 
  return (
-    <aside className="w-full min-w-64 max-w-64 bg-gray-200 p-4 space-y-4 sm:space-y-0 sm:flex sm:flex-col">
-      <h2 className="mb-4 text-base font-semibold mt-2">Add a New Food Item</h2>
-      {error && <p>{error}</p>}
-      <FoodForm onSubmit={onSubmit} />
-    </aside>
+<aside className="w-full min-w-64 max-w-64 bg-gray-200 p-4 space-y-4 sm:space-y-0 sm:flex sm:flex-col hidden sm:block">
+    <h2 className="mb-4 text-base font-semibold mt-2">Add a New Food Item</h2>
+    {error && <p>{error}</p>}
+    <FoodForm onSubmit={onSubmit} />
+ </aside>
  );
 };
 
